@@ -15,7 +15,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   //====================================
-  Widget loadedStateWidget() {
+  Widget loadedStateWidget(HomeLoadedState successState) {
     print("loadedStateWidget");
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +36,14 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.shopping_cart_outlined))
         ],
       ),
-      body: Placeholder(),
+      body: ListView.builder(
+          itemCount: successState.products.length,
+          itemBuilder: (context, index) {
+            return ProductTileWidget(
+              productDataModel: successState.products[index],
+              homeBloc: homeBloc,
+            );
+          }),
     );
   }
 
@@ -70,6 +77,12 @@ class _HomeState extends State<Home> {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return Cart();
           }));
+        } else if (state is HomeProductCartedActionState) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Product Carted")));
+        } else if (state is HomeProductWishlistedActionState) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Product Wishlisted")));
         }
       },
       builder: (context, state) {
@@ -78,32 +91,7 @@ class _HomeState extends State<Home> {
             return Center(child: CircularProgressIndicator());
           case HomeLoadedState:
             final successState = state as HomeLoadedState;
-            return Scaffold(
-              appBar: AppBar(
-                title: Text("Flutter Bloc"),
-                // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                backgroundColor: Colors.teal,
-                foregroundColor: Colors.white,
-                actions: [
-                  IconButton(
-                      onPressed: () {
-                        homeBloc.add(HomeWishlistButtonNavigateEvent());
-                      },
-                      icon: Icon(Icons.favorite_border)),
-                  IconButton(
-                      onPressed: () {
-                        homeBloc.add(HomeCartButtonNavigateEvent());
-                      },
-                      icon: Icon(Icons.shopping_cart_outlined))
-                ],
-              ),
-              body: ListView.builder(
-                  itemCount: successState.products.length,
-                  itemBuilder: (context, index) {
-                    return ProductTileWidget(
-                        productDataModel: successState.products[index], homeBloc: homeBloc,);
-                  }),
-            );
+            return loadedStateWidget(successState);
           case HomeErrorState:
             return Scaffold(
               body: Center(
