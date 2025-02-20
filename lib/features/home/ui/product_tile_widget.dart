@@ -14,6 +14,7 @@ class ProductTileWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
+        padding: EdgeInsets.only(left: 8, right: 8),
         decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(11)),

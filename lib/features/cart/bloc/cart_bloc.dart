@@ -14,10 +14,21 @@ part 'cart_state.dart';
 class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(CartInitial()) {
     on<CartInitialEvent>(cartInitialEvent);
+    on<RemoveFromCartEvent>(removeFromCartEvent);
   }
 
   FutureOr<void> cartInitialEvent(
       CartInitialEvent event, Emitter<CartState> emit) {
     emit(CartSuccessState(cartItem: cartItems));
+  }
+
+  FutureOr<void> removeFromCartEvent(
+      RemoveFromCartEvent event, Emitter<CartState> emit) {
+    cartItems.remove(event.productDataModel);
+    emit(CartSuccessState(cartItem: cartItems));
+    //get your cartItems
+    // check is your product model there in cartItem -> always true
+    // run a function to remove that product model from that cartItem
+    // emit removedCartItemState
   }
 }

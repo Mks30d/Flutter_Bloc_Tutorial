@@ -16,9 +16,11 @@ class CartTileWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
+        padding: EdgeInsets.only(left: 8, right: 8),
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(11)),
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(11),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,10 +44,11 @@ class CartTileWidget extends StatelessWidget {
                   children: [
                     IconButton(
                         onPressed: () {
-                          // homeBloc.add(HomeProductCartButtonClickedEvent(
-                          //     clickedProduct: productDataModel));
+                          cartBloc.add(RemoveFromCartEvent(
+                            productDataModel: productDataModel
+                          ));
                         },
-                        icon: Icon(Icons.add_shopping_cart)),
+                        icon: Icon(Icons.shopping_cart)),
                     IconButton(
                         onPressed: () {
                           // homeBloc.add(HomeProductWishlistButtonClickedEvent(
