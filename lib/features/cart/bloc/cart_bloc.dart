@@ -25,7 +25,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   FutureOr<void> removeFromCartEvent(
       RemoveFromCartEvent event, Emitter<CartState> emit) {
     cartItems.remove(event.productDataModel);
-    emit(CartSuccessState(cartItem: cartItems));
+    emit(CartSuccessState(cartItem: cartItems));  // --- OR ---
+    emit(CartRemovedActionState(cartItem: cartItems));
     //get your cartItems
     // check is your product model there in cartItem -> always true
     // run a function to remove that product model from that cartItem
